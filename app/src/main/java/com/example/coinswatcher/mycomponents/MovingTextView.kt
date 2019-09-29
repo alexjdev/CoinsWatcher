@@ -93,7 +93,7 @@ class MovingTextView : View {
         paramList.add(1, OneParam("Empty param: ", Color.GREEN.toColor(), "", Color.RED.toColor()))
         paramList.add(2, OneParam("Hello ", Color.BLUE.toColor(), "World", Color.GREEN.toColor()))
         paramList.add(3, OneParam("Green color is: ", Color.GREEN.toColor(), "GREEN", Color.GREEN.toColor()))
-        paramList.add(4, OneParam("To do: ", Color.BLUE.toColor(), "Add setup (add/remove) options for MovingTextView component", Color.RED.toColor()))
+        paramList.add(4, OneParam("To do: ", Color.BLUE.toColor(), "Add setup (add/remove strings) options for MovingTextView component", Color.RED.toColor()))
         paramList.add(5, OneParam("Today is: ", Color.BLUE.toColor(), "Very nice day !!!", Color.BLUE.toColor()))
 
         val paintTmp =  Paint()
