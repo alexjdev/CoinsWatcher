@@ -110,7 +110,7 @@ class MovingTextView : View {
             paint.getTextBounds(separatorStr, 0, separatorStr.length, boundsTmp)
             fullBuildTextRowSize += boundsTmp.width()
         }
-        
+
 
         Timer().scheduleAtFixedRate(
             timerTask() {
