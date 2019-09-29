@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutActivity">
+
+
+    <LinearLayout
+        android:layout_width="398dp"
+        android:layout_height="546dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="4dp">
+
+        <TextView
+            android:id="@+id/tv_dlg_about_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/about_activity_title"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_dlg_about_counter_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_activity_counter_val"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_dlg_about_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/about_activity_counter" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_dlg_about_descr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_activity_descr" />
+
+        <TextView
+            android:id="@+id/tv_dlg_about_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_activity_author" />
+
+        <Button
+            android:id="@+id/btn_about_dlg_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onCloseActivity"
+            android:text="@string/about_activity_btn_ok" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

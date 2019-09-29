@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">CoinsWatcher</string>
+    <string name="action_settings">Settings</string>
+    <string name="detailed_activity_title">More details about selected coin</string>
+    <string name="detailed_activity_main_text">Maximum information about selected coin</string>
+    <string name="detailed_activity_main_rank">Current rank by market capitalization</string>
+    <string name="detailed_activity_main_id">Identifier of the coin</string>
+    <string name="detailed_activity_main_name">Name of the coin</string>
+    <string name="detailed_activity_main_symbol">Short symbol of the coin</string>
+    <string name="detailed_activity_main_price_usd">Current price(in USD) of the coin</string>
+    <string name="detailed_activity_main_price_btc">Current price(in BTC) of the coin</string>
+    <string name="detailed_activity_main_24h_volume_usd">24h volume(in USD) of the coin</string>
+    <string name="detailed_activity_main_market_cap_usd">Current market capitalization(in USD) of the coin</string>
+    <string name="detailed_activity_main_available_supply">Available supply of selected coin</string>
+    <string name="detailed_activity_main_total_supply">Total supply of the coin</string>
+    <string name="detailed_activity_main_max_supply">Max supply (unlim if 0) of the coin</string>
+    <string name="detailed_activity_main_percent_change_1h">Price changed % for last hour of the coin</string>
+    <string name="detailed_activity_main_percent_change_24h">Price changed % for last 24 hours of the coin</string>
+    <string name="detailed_activity_main_percent_change_7d">Price changed % for last 7 days of the coin</string>
+    <string name="detailed_activity_main_last_updated">The last update information of the coin</string>
+    <string name="detailed_activity_main_stop_loss">Current stop loss value</string>
+    <string name="detailed_activity_main_take_profit">Current take profit value</string>
+    <string name="detailed_activity_btn_ok">Ok</string>
+    <string name="detailed_activity_btn_watch">Set watching</string>
+
+    <string name="mmenu_action_settings_str">Settings</string>
+    <string name="mmenu_action_about_str">About</string>
+    <string name="mmenu_action_close_app_str">Close application</string>
+
+    <string name="settings_activity_title">Settings</string>
+    <string name="settings_activity_main_msg">The settings dialog not implemented yet</string>
+    <string name="settings_activity_btn_ok">Ok</string>
+    <string name="settings_url_radioGroup_tv">Choose datasource URL:</string>
+    <string name="settings_url_radioGroup">Choose datasource URL:</string>
+    <string name="settings_url_radioButton1">coinmarketcap (LIVE)</string>
+    <string name="settings_url_radioButton2">myjson</string>
+    <string name="settings_url_radioButton3">jsonblob</string>
+
+    <string name="about_activity_title">About</string>
+    <string name="about_activity_counter_val">0</string>
+    <string name="about_activity_counter"> times this application was started</string>
+    <string name="about_activity_descr">This application was developed while author studying Kotlin and development for android</string>
+    <string name="about_activity_author">Author\'s e-mail: alex_jdev@mail.ru</string>
+    <string name="about_activity_btn_ok">Ok</string>
+
+
+    <string name="add_set_watch_activity_title">Setup watching for selected coin</string>
+    <string name="add_set_watch_activity_main_msg">Selected coin:</string>
+    <string name="add_set_watch_activity_coin_name">Name</string>
+    <string name="add_set_watch_activity_symbol">Symbol</string>
+    <string name="add_set_watch_activity_current_price_usd">Current price USD</string>
+    <string name="add_set_watch_activity_current_price_btc">Current price BTC</string>
+    <string name="add_set_watch_activity_stop_loss">Set stop loss (USD)</string>
+    <string name="add_set_watch_activity_take_profit">Set take profit (USD)</string>
+    <string name="add_set_watch_activity_btn_save">Save changes</string>
+    <string name="add_set_watch_activity_btn_cancel">Cancel</string>
+
+
+
+</resources>

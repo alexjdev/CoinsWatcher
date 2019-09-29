@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.coinswatcher.MainActivity">
+    <item
+        android:id="@+id/mmenu_action_settings"
+        android:orderInCategory="100"
+        android:title="@string/mmenu_action_settings_str"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/mmenu_action_about"
+        android:orderInCategory="100"
+        android:title="@string/mmenu_action_about_str"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/mmenu_action_close_app"
+        android:orderInCategory="100"
+        android:title="@string/mmenu_action_close_app_str"
+        app:showAsAction="never" />
+</menu>

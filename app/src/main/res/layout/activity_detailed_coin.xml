@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailedCoinActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="375dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/detailed_activity_main_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.594"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:layout_width="369dp"
+        android:layout_height="550dp"
+        android:layout_marginTop="108dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_rank" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_rank_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_id" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_id_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_name" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_name_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_symbol" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_symbol_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_price_usd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_price_usd" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_price_usd_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_price_btc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_price_btc" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_price_btc_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_24h_volume_usd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_24h_volume_usd" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_24h_volume_usd_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_market_cap_usd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_market_cap_usd" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_market_cap_usd_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_available_supply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_available_supply" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_available_supply_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_total_supply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_total_supply" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_total_supply_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_max_supply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_max_supply" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_max_supply_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_percent_1h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_percent_change_1h" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_percent_1h_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_percent_24h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_percent_change_24h" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_percent_24h_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_percent_7d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_percent_change_7d" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_percent_7d_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_last_upd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_last_updated" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_last_upd_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_stop_loss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_stop_loss" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_stop_loss_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_take_profit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detailed_activity_main_take_profit" />
+
+            <TextView
+                android:id="@+id/tv_dlg_detailed_take_profit_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/detailed_dlg_btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:onClick="onCloseActivity"
+        android:text="@string/detailed_activity_btn_ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/detailed_dlg_btn_watch"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/detailed_dlg_btn_watch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="onClickWatchCoin"
+        android:text="@string/detailed_activity_btn_watch"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
