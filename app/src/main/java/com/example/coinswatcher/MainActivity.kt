@@ -26,6 +26,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.util.Log
+import java.lang.ref.WeakReference
 
 
 class MainActivity : AppCompatActivity() {
@@ -63,7 +64,9 @@ class MainActivity : AppCompatActivity() {
     private val description = "NotificationDescription"
     private var mNotificationId: Int = 1000
 
-    private  val LOG_TAG = "debugLog"
+    private val LOG_TAG = "debugLog"
+
+    private var requestJSONData: RequestJSONData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,9 +145,18 @@ class MainActivity : AppCompatActivity() {
         coinInfoList.clear()
         //
         if (isNetworkConnected) {
-            RequestJSONData().execute()
+            requestJSONData = RequestJSONData(this)
+            (requestJSONData as RequestJSONData).execute()
         } else {
             Toast.makeText(applicationContext, "No Internet Connection Yet!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        if(requestJSONData != null) {
+            (requestJSONData as RequestJSONData).cancel(true)
         }
     }
 
@@ -157,121 +169,147 @@ class MainActivity : AppCompatActivity() {
     }
 
     //////////////////////////////////////////////////////////
-    inner class RequestJSONData : AsyncTask<Void, Void, String>() {
 
+    companion object {
+        class RequestJSONData internal constructor(context: MainActivity) :
+            AsyncTask<Void, Void, String>() {
 
-        //@Override
-        override fun onPreExecute() {
-            super.onPreExecute()
+            private val activityRef: WeakReference<MainActivity> = WeakReference(context)
 
-            progressDialog = ProgressDialog(this@MainActivity)
-            progressDialog.setMessage("Please wait...")
-            progressDialog.setCancelable(false)
-            progressDialog.show()
-        }
+            private  val LOG_TAG = "debugLogThread"
 
-        override fun doInBackground(vararg p0: Void?): String {
-            var jsonViaHttpHandler =  JsonViaHttpHandler()
+            //@Override
+            override fun onPreExecute() {
+                super.onPreExecute()
 
-            while (true) {
+                val activity = activityRef.get()
+                Log.w(LOG_TAG,"onPreExecute activity: $activity")
+                if (activity == null || activity.isFinishing) return
 
-                //REQUEST DATA FROM DB FIRST
-                if(databaseHelper != null) {
-                    val allList = databaseHelper!!.allCoinInfoDBLimitList
-                    Log.d(LOG_TAG,"ALL Limits for coins size of allList ${allList.size}")
-                    allList.forEach {
-                        Log.d(LOG_TAG,"FOUND LIMIT FOR: ${it.symbol}")
-                    }
-                }
+                activity.progressDialog = ProgressDialog(activity)
+                activity.progressDialog.setMessage("Please wait...")
+                activity.progressDialog.setCancelable(false)
+                activity.progressDialog.show()
+            }
 
+            override fun doInBackground(vararg p0: Void?): String {
 
-                coinInfoList.clear()
-                var jsonString = jsonViaHttpHandler.sendHTTPRequest(getSelectedURL())
-                Log.d(LOG_TAG,"Received JSON String: $jsonString")
-                if (jsonString != null) {
-                    try {
+                val activity = activityRef.get()
+                if (activity == null || activity.isFinishing) return ""
 
-                        var counter = 0
-                        val jsonarray = JSONArray(jsonString)
-                        for (i in 0 until jsonarray.length()) {
-                            val jsonObj = jsonarray.getJSONObject(i)
-                            Log.d(LOG_TAG,"Parsing Array's ITEM: ${jsonObj.toString()}")
+                var jsonViaHttpHandler =  JsonViaHttpHandler()
 
-                            var coinInfo = CoinInfo(
-                                jsonObj.getString("id"),
-                                jsonObj.getString("name"),
-                                jsonObj.getString("symbol"),
-                                jsonObj.getInt("rank"),
-                                jsonObj.getDouble("price_usd"),
-                                jsonObj.getDouble("price_btc"),
-                                jsonObj.getDouble("24h_volume_usd"),
-                                jsonObj.getDouble("market_cap_usd"),
-                                jsonObj.getDouble("available_supply"),
-                                jsonObj.getDouble("total_supply"),
-                                0.0, //if(jsonObj.getDouble("max_supply") == null) 0.0 else jsonObj.getDouble("max_supply"), //
-                                jsonObj.getDouble("percent_change_1h"),
-                                jsonObj.getDouble("percent_change_24h"),
-                                jsonObj.getDouble("percent_change_7d"),
-                                jsonObj.getLong("last_updated")
+                while (true) {
 
-                            )
-                            coinInfoList.add(coinInfo)
-
-                            counter++
-
-                            checkWatchedCoin(coinInfo)
+                    //REQUEST DATA FROM DB FIRST
+                    if(activity.databaseHelper != null) {
+                        val allList = activity.databaseHelper!!.allCoinInfoDBLimitList
+                        Log.d(LOG_TAG,"ALL Limits for coins size of allList ${allList.size}")
+                        allList.forEach {
+                            Log.d(LOG_TAG,"FOUND LIMIT FOR: ${it.symbol}")
                         }
-                        Log.d(LOG_TAG,"Found ITEMS: $counter")
-
-
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                        Log.d(LOG_TAG,"Json parsing error: ")
                     }
-                } else {
-                    Log.d(LOG_TAG,"Could not get json from server.")
-                }
 
-                publishProgress()
-                Thread.sleep(PERIOD_OF_REQUEST_DATA)
+
+                    activity.coinInfoList.clear()
+                    var jsonString = jsonViaHttpHandler.sendHTTPRequest(activity.getSelectedURL())
+                    Log.d(LOG_TAG,"Received JSON String: $jsonString")
+                    if (jsonString != null) {
+                        try {
+
+                            var counter = 0
+                            val jsonarray = JSONArray(jsonString)
+                            for (i in 0 until jsonarray.length()) {
+                                val jsonObj = jsonarray.getJSONObject(i)
+                                Log.d(LOG_TAG,"Parsing Array's ITEM: ${jsonObj.toString()}")
+
+                                var coinInfo = CoinInfo(
+                                    jsonObj.getString("id"),
+                                    jsonObj.getString("name"),
+                                    jsonObj.getString("symbol"),
+                                    jsonObj.getInt("rank"),
+                                    jsonObj.getDouble("price_usd"),
+                                    jsonObj.getDouble("price_btc"),
+                                    jsonObj.getDouble("24h_volume_usd"),
+                                    jsonObj.getDouble("market_cap_usd"),
+                                    jsonObj.getDouble("available_supply"),
+                                    jsonObj.getDouble("total_supply"),
+                                    0.0, //if(jsonObj.getDouble("max_supply") == null) 0.0 else jsonObj.getDouble("max_supply"), //
+                                    jsonObj.getDouble("percent_change_1h"),
+                                    jsonObj.getDouble("percent_change_24h"),
+                                    jsonObj.getDouble("percent_change_7d"),
+                                    jsonObj.getLong("last_updated")
+
+                                )
+                                activity.coinInfoList.add(coinInfo)
+
+                                counter++
+
+                                activity.checkWatchedCoin(coinInfo)
+                            }
+                            Log.d(LOG_TAG,"Found ITEMS: $counter")
+
+
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            Log.d(LOG_TAG,"Json parsing error: ")
+                        }
+                    } else {
+                        Log.d(LOG_TAG,"Could not get json from server.")
+                    }
+
+                    publishProgress()
+                    Thread.sleep(activity.PERIOD_OF_REQUEST_DATA)
 //                delay(PERIOD_OF_REQUEST_DATA)
 
 
-            }//End of permanent loop
+                }//End of permanent loop
 
-            return ""//null
-        }
-
-        override fun onPostExecute(result: String) {
-            super.onPostExecute(result)
-
-            if( coinInfoList.size > 0) {
-                val mAdapter = MainAdapter()
-                mAdapter.setNewCoinInfoList(coinInfoList)
-                recyclerView_main.adapter = mAdapter
+                return ""//null
             }
 
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss()
-            }
-        }
+            override fun onPostExecute(result: String) {
+                super.onPostExecute(result)
 
-        override fun onProgressUpdate(vararg values: Void?) {
-            super.onProgressUpdate(*values)
+                val activity = activityRef.get()
+                if (activity == null || activity.isFinishing) return
 
-            if( coinInfoList.size > 0) {
-                val mAdapter = MainAdapter()
-                mAdapter.setNewCoinInfoList(coinInfoList)
-                recyclerView_main.adapter = mAdapter
+                if( activity.coinInfoList.size > 0) {
+                    val mAdapter = MainAdapter()
+                    mAdapter.setNewCoinInfoList(activity.coinInfoList)
+                    activity.recyclerView_main.adapter = mAdapter
+                }
+
+                if (activity.progressDialog.isShowing()) {
+                    activity.progressDialog.dismiss()
+                }
             }
 
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss()
+            override fun onProgressUpdate(vararg values: Void?) {
+                super.onProgressUpdate(*values)
+
+                val activity = activityRef.get()
+                if (activity == null || activity.isFinishing) return
+
+                if( activity.coinInfoList.size > 0) {
+                    val mAdapter = MainAdapter()
+                    mAdapter.setNewCoinInfoList(activity.coinInfoList)
+                    activity.recyclerView_main.adapter = mAdapter
+                }
+
+                if (activity.progressDialog.isShowing()) {
+                    activity.progressDialog.dismiss()
+                }
             }
+
+            override fun onCancelled() {
+                super.onCancelled()
+                Log.w(LOG_TAG,"onCancelled")
+            }
+
         }
     }
     //////////////////////////////////////////////////////////
-
 
 
     interface ClickListener {
