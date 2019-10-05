@@ -183,7 +183,6 @@ class MainActivity : AppCompatActivity() {
                 super.onPreExecute()
 
                 val activity = activityRef.get()
-                Log.w(LOG_TAG,"onPreExecute activity: $activity")
                 if (activity == null || activity.isFinishing) return
 
                 activity.progressDialog = ProgressDialog(activity)
