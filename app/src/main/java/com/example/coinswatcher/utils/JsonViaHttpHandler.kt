@@ -9,6 +9,7 @@ import java.net.URL
 
 class JsonViaHttpHandler() {
 
+    private val LOG_TAG = "debugLogRequest"
 
     fun sendHTTPRequest(Urlreq: String) : String {
 
@@ -24,8 +25,8 @@ class JsonViaHttpHandler() {
 //            wr.write(reqParam);
 //            wr.flush();
 
-            println("URL : $url")
-            println("Response Code : $responseCode")
+            Log.d(LOG_TAG, "URL : $url")
+            Log.d(LOG_TAG, "Response Code : $responseCode")
 
             BufferedReader(InputStreamReader(inputStream)).use {
 
@@ -35,7 +36,7 @@ class JsonViaHttpHandler() {
                     inputLine = it.readLine()
                 }
                 it.close()
-                println("Response : $response")
+                Log.d(LOG_TAG, "Response : $response")
             }
         }
         return response.toString()

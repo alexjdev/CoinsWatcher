@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddSetWatchActivity"></activity>
+        <activity android:name=".NotificationActivity"></activity>
+        <activity android:name=".AddSetWatchActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".DetailedCoinActivity" />

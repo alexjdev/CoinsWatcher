@@ -1,6 +1,6 @@
 package com.example.coinswatcher
 
-import android.app.ProgressDialog
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -16,18 +16,17 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coinswatcher.utils.CoinInfo
-import com.example.coinswatcher.utils.CoinInfoDBLimit
 import com.example.coinswatcher.utils.DatabaseHelper
 import com.example.coinswatcher.utils.JsonViaHttpHandler
-
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 import org.json.JSONException
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.schedule
-import kotlin.concurrent.timerTask
-//import kotlinx.coroutines.experimental.*
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.os.Build
+import android.util.Log
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -56,6 +55,16 @@ class MainActivity : AppCompatActivity() {
 
     private var databaseHelper: DatabaseHelper? = null
 
+
+    lateinit var notificationManager: NotificationManager
+    lateinit var notificationChannel: NotificationChannel
+    lateinit var builder: Notification.Builder
+    private val channelID = "com.example.coinswatcher"
+    private val description = "NotificationDescription"
+    private var mNotificationId: Int = 1000
+
+    private  val LOG_TAG = "debugLog"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -71,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         var runCounter = myPreferences.getRunCount()
         runCounter++
         myPreferences.setRunCount(runCounter)
-        println("runCounter $runCounter")
+        Log.d(LOG_TAG,"runCounter $runCounter")
 
         recyclerView_main.layoutManager = LinearLayoutManager(this)
         recyclerView_main.adapter = MainAdapter()
@@ -80,14 +89,14 @@ class MainActivity : AppCompatActivity() {
         recyclerView_main.addOnItemTouchListener(RecyclerTouchListener(applicationContext, recyclerView_main!!, object : ClickListener {
 
             override fun onClick(view: View, position: Int) {
-                println("onClick position $position coin= ${coinInfoList.get(position).toString()}")
+                Log.d(LOG_TAG,"onClick position $position coin= ${coinInfoList.get(position).toString()}")
                 val secondIntent = Intent(mActivity, DetailedCoinActivity::class.java)
                 secondIntent.putExtra("CoinInfo", coinInfoList.get(position))
                 startActivity(secondIntent)
             }
 
             override fun onLongClick(view: View?, position: Int) {
-                println("onLongClick position $position")
+                Log.d(LOG_TAG,"onLongClick position $position")
             }
         }))
 
@@ -129,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initState() {
-        println("initState")
+        Log.d(LOG_TAG,"initState")
         coinInfoList.clear()
         //
         if (isNetworkConnected) {
@@ -141,7 +150,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private fun getSelectedURL(): String {
+    public fun getSelectedURL(): String {
 
         val myPref = MyPreferences(this)
         return URLS[myPref.getSelectedURLNum()]
@@ -149,6 +158,7 @@ class MainActivity : AppCompatActivity() {
 
     //////////////////////////////////////////////////////////
     inner class RequestJSONData : AsyncTask<Void, Void, String>() {
+
 
         //@Override
         override fun onPreExecute() {
@@ -168,16 +178,16 @@ class MainActivity : AppCompatActivity() {
                 //REQUEST DATA FROM DB FIRST
                 if(databaseHelper != null) {
                     val allList = databaseHelper!!.allCoinInfoDBLimitList
-                    println("ALL Limits for coins size of allList ${allList.size}")
+                    Log.d(LOG_TAG,"ALL Limits for coins size of allList ${allList.size}")
                     allList.forEach {
-                        println("FOUND LIMIT FOR: ${it.symbol}")
+                        Log.d(LOG_TAG,"FOUND LIMIT FOR: ${it.symbol}")
                     }
                 }
 
 
                 coinInfoList.clear()
                 var jsonString = jsonViaHttpHandler.sendHTTPRequest(getSelectedURL())
-                println("Received JSON String: $jsonString")
+                Log.d(LOG_TAG,"Received JSON String: $jsonString")
                 if (jsonString != null) {
                     try {
 
@@ -185,7 +195,7 @@ class MainActivity : AppCompatActivity() {
                         val jsonarray = JSONArray(jsonString)
                         for (i in 0 until jsonarray.length()) {
                             val jsonObj = jsonarray.getJSONObject(i)
-                            System.out.println("Parsing Array's ITEM: ${jsonObj.toString()}")
+                            Log.d(LOG_TAG,"Parsing Array's ITEM: ${jsonObj.toString()}")
 
                             var coinInfo = CoinInfo(
                                 jsonObj.getString("id"),
@@ -211,15 +221,15 @@ class MainActivity : AppCompatActivity() {
 
                             checkWatchedCoin(coinInfo)
                         }
-                        System.out.println("Found ITEMS: $counter")
+                        Log.d(LOG_TAG,"Found ITEMS: $counter")
 
 
                     } catch (e: JSONException) {
                         e.printStackTrace()
-                        println("Json parsing error: ")
+                        Log.d(LOG_TAG,"Json parsing error: ")
                     }
                 } else {
-                    println("Could not get json from server.")
+                    Log.d(LOG_TAG,"Could not get json from server.")
                 }
 
                 publishProgress()
@@ -307,26 +317,81 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun checkWatchedCoin(coinInfo: CoinInfo): Boolean {
+    public fun checkWatchedCoin(coinInfo: CoinInfo): Boolean {
         if(coinInfo.symbol != null && coinInfo.price_usd > 0 && coinInfo.price_btc > 0) {
-            println("checkWatchedCoin: $coinInfo")
+            Log.d(LOG_TAG,"checkWatchedCoin: $coinInfo")
             if(databaseHelper != null) {
                 var coinLimits = databaseHelper!!.getCoinInfoDBLimitFromArray(coinInfo.symbol)
                 if(coinLimits != null) {
                     val stopLoss = coinLimits!!.stopLoss_usd
                     val takeProfit = coinLimits!!.takeProfit_usd
+
+                    //WRONG CONDITION FOR TESTING
                     if(stopLoss < coinInfo.price_usd) {
-                        println("STOP LOSS FOR ${coinInfo.symbol} current price: ${coinInfo.price_usd} stop price: $stopLoss")
+                        Log.d(LOG_TAG,"STOP LOSS FOR ${coinInfo.symbol} current price: ${coinInfo.price_usd} stop price: $stopLoss")
                         //Toast.makeText(applicationContext, "STOP LOSS FOR ${coinInfo.symbol}", Toast.LENGTH_SHORT).show()
+                        setNotificationForCoin(coinInfo, true)
                     }
+
+                    //WRONG CONDITION FOR TESTING
                     if(takeProfit > coinInfo.price_usd) {
-                        println("TAKE PROFIT FOR ${coinInfo.symbol} current price: ${coinInfo.price_usd} take price: $takeProfit")
+                        Log.d(LOG_TAG,"TAKE PROFIT FOR ${coinInfo.symbol} current price: ${coinInfo.price_usd} take price: $takeProfit")
                         //Toast.makeText(applicationContext, "TAKE PROFIT FOR ${coinInfo.symbol}", Toast.LENGTH_SHORT).show()
+                        setNotificationForCoin(coinInfo, false)
                     }
                 }
             }
         }
         return false
+    }
+
+    private fun setNotificationForCoin(coinInfo: CoinInfo, isStopLoss: Boolean) {
+
+        mNotificationId++
+        val notifTitle = if (isStopLoss) "WARNING, WARNING(Stop loss)" else "NOTIFICATION(Take profit)"
+
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+
+            //val intent = Intent(this, LauncherActivity::class.java)
+            val intent = Intent(this, NotificationActivity::class.java)
+
+            intent.putExtra("CoinInfo", coinInfo)
+            intent.putExtra("isStopLoss", isStopLoss)
+
+        val pendingIntent = PendingIntent.getActivity(this, mNotificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                notificationChannel =
+                    NotificationChannel(channelID, description, NotificationManager.IMPORTANCE_HIGH)
+                notificationChannel.enableLights(true)
+                notificationChannel.lightColor = Color.GREEN
+                notificationChannel.enableVibration(true)
+                notificationManager.createNotificationChannel(notificationChannel)
+
+                builder = Notification.Builder(this, channelID)
+                    .setContentTitle(notifTitle)
+                    .setContentText("Current price of ${coinInfo.name} is ${coinInfo.price_usd}")
+                    .setSmallIcon(R.drawable.ic_stat_name)//.setSmallIcon(R.mipmap.ic_launcher_round)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.mipmap.ic_launcher))
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .setLights(Color.GREEN, 1000, 500)
+                    .setColor( if(isStopLoss) Color.RED else Color.GREEN)
+
+            } else {
+
+                builder = Notification.Builder(this)
+                    .setContentTitle(notifTitle)
+                    .setContentText("Current price of ${coinInfo.name} is ${coinInfo.price_usd}")
+                    .setSmallIcon(R.drawable.ic_stat_name)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.mipmap.ic_launcher))
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+            }
+
+            notificationManager.notify(mNotificationId, builder.build())
+
     }
 
     override fun onDestroy() {

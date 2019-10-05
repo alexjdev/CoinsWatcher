@@ -10,9 +10,11 @@ import java.util.ArrayList
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
+    private  val LOG_TAG = "debugLogDB"
+
     init {
 
-        Log.d("table", CREATE_TABLE_COINS_WATCH)
+        Log.d(LOG_TAG, CREATE_TABLE_COINS_WATCH)
     }
 
     val allCoinInfoDBLimitList: ArrayList<CoinInfoDBLimit>
@@ -34,7 +36,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 } while (c.moveToNext())
                 Log.d("array", coinInfoDBLimitArrayList.toString())
             }
-            println("DatabaseHelper.allCoinInfoDBLimitList size= ${coinInfoDBLimitArrayList.size}")
+            c.close()
+            db.close()
             return coinInfoDBLimitArrayList
         }
 
@@ -62,9 +65,14 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             symbol = c.getString(c.getColumnIndex(KEY_SYMBOL))
             stop = c.getDouble(c.getColumnIndex(KEY_STOP_LOSS))
             take = c.getDouble(c.getColumnIndex(KEY_TAKE_PROFIT))
-            Log.d("found symbol", symbol)
+            Log.d(LOG_TAG, "found symbol: $symbol")
 
+            c.close()
+            db.close()
             return CoinInfoDBLimit(symbol, stop, take)
+        } else {
+            c.close()
+            db.close()
         }
         return null
     }
@@ -92,7 +100,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
 
         val result = db.insert(TABLE_COINS_WATCH, null, values)
-        println("addCoinInfoDBLimit result= $result")
+        Log.d(LOG_TAG, "addCoinInfoDBLimit result= $result")
 
         if(result == -1L) {//TEMPORARY HACK
 
@@ -103,8 +111,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             var selectionArgs = arrayOf(coinLimit.symbol)
 
             var res = db.update(TABLE_COINS_WATCH, val2, "symbol=?", selectionArgs)
-            println("addCoinInfoDBLimit ATTEMPT UPDATE res= $res")
+            Log.d(LOG_TAG, "addCoinInfoDBLimit ATTEMPT UPDATE res= $res")
         }
+        db.close()
         return result
     }
 
@@ -116,10 +125,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 " ON CONFLICT(symbol) DO UPDATE SET" +
                 " update $TABLE_COINS_WATCH set stop_loss=${coinLimit.stopLoss_usd}, take_profit=${coinLimit.takeProfit_usd} where symbol=${coinLimit.symbol};"
 
-        println("upsertCoinForWatch sqlRequest= $sqlRequest")
+        Log.d(LOG_TAG, "upsertCoinForWatch sqlRequest= $sqlRequest")
         db.execSQL(sqlRequest)
-
-        println("upsertCoinForWatch after request")
+        db.close()
+        Log.d(LOG_TAG, "upsertCoinForWatch after request")
     }
 
 //    fun upsertCoinForWatch(coinLimit: CoinInfoDBLimit) {
@@ -130,10 +139,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 //                "ELSE\n" +
 //                "   insert into $TABLE_COINS_WATCH(symbol, stop_loss, take_profit) values(${coinLimit.symbol}, ${coinLimit.stopLoss_usd}, ${coinLimit.takeProfit_usd});"
 //
-//        println("upsertCoinForWatch sqlRequest= $sqlRequest")
+//        Log.d(LOG_TAG, "upsertCoinForWatch sqlRequest= $sqlRequest")
 //        db.execSQL(sqlRequest)
 //
-//        println("upsertCoinForWatch after request")
+//        Log.d(LOG_TAG, "upsertCoinForWatch after request")
 //    }
 
     companion object {

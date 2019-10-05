@@ -130,11 +130,9 @@ class MovingTextView : View {
     private fun setupColorScheme() {
         //TODO read preferences and set color
         //colorMode = ColorMode.Light ?
-        // val
     }
 
     private fun moveRowToLeft() {
-        //println("moveRowToLeft currentX= $currentX  widthMyDeviceScreenSize= $widthMyDeviceScreenSize")
         currentX -= ROW_SPEED
         if(currentX + fullBuildTextRowSize - widthMyDeviceScreenSize/2 < 0) {
             currentX = 0f
@@ -144,7 +142,6 @@ class MovingTextView : View {
     }
 
     private fun moveRowToRight() {
-        //println("moveRowToRight currentX= $currentX  widthMyDeviceScreenSize= $widthMyDeviceScreenSize")
         currentX += ROW_SPEED
         if(currentX > widthMyDeviceScreenSize) {
             currentX = 0 - fullBuildTextRowSize - widthMyDeviceScreenSize/2
@@ -155,7 +152,6 @@ class MovingTextView : View {
 
     override fun onDraw(canvas: Canvas?) {
 
-        //println("onDraw canvas width= ${canvas?.width}")
 
         //KOSTYL
         if(!isInitializedMyScreenWidth) {
@@ -190,12 +186,8 @@ class MovingTextView : View {
 
         //KOSTYL
         if(!isInitializedMyScreenWidth) {
-            println("KOSTYL:ROW SIZE: $fullBuildTextRowSize")
-            //paint.getTextBounds(str, 0, str.length, bounds)
             fullBuildTextRowSize += offsetXForDrawText // + bounds.width() * 3
             isInitializedMyScreenWidth = true
-            println("KOSTYL:ROW SIZE: $fullBuildTextRowSize   offsetXForDrawText: $offsetXForDrawText") // KOSTYL:ROW SIZE: 4060.0
-            println("KOSTYL:separatorStr.length: ${separatorStr.length}") // KOSTYL:separatorStr.length: 5
         }
     }
 

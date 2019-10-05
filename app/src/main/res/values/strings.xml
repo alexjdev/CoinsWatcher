@@ -41,6 +41,7 @@
     <string name="about_activity_counter"> times this application was started</string>
     <string name="about_activity_descr">This application was developed while author studying Kotlin and development for android</string>
     <string name="about_activity_author">Author\'s e-mail: alex_jdev@mail.ru</string>
+    <string name="about_activity_btn_go_to_web">Open source web page</string>
     <string name="about_activity_btn_ok">Ok</string>
 
 
@@ -56,5 +57,10 @@
     <string name="add_set_watch_activity_btn_cancel">Cancel</string>
 
 
-
+    <string name="notification_activity_msg">NOTIFICATION</string>
+    <string name="notification_activity_coin_symbol">The coin</string>
+    <string name="notification_activity_coin_symbol_val"></string>
+    <string name="notification_activity_coin_price">Current price</string>
+    <string name="notification_activity_coin_price_val"></string>
+    <string name="notification_activity_btn_ok">Ok</string>
 </resources>

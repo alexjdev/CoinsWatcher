@@ -55,6 +55,13 @@
             android:text="@string/about_activity_author" />
 
         <Button
+            android:id="@+id/btn_about_dlg_go_to_web"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onOpenSourcePage"
+            android:text="@string/about_activity_btn_go_to_web" />
+
+        <Button
             android:id="@+id/btn_about_dlg_ok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
